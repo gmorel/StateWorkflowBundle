@@ -1,0 +1,43 @@
+parameters:
+
+services:
+# Booking Workflow
+    demo.booking_engine.state_workflow:
+        class: Gmorel\StateWorkflowBundle\StateEngine\StateWorkflow
+        arguments: ["Booking Workflow"]
+        calls:
+            - [setDefaultState, ["@demo.booking_engine.state.incomplete"]]
+        tags:
+            -  { name: state_workflow_bundle.workflow }
+
+# Booking States
+    demo.booking_engine.state.incomplete:
+        class: Gmorel\StateWorkflowBundle\Demo\BookingEngine\Domain\State\Implementation\StateIncomplete
+        arguments: []
+        tags:
+            -  { name: demo.booking_engine.state }
+    demo.booking_engine.state.waiting_payment:
+        class: Gmorel\StateWorkflowBundle\Demo\BookingEngine\Domain\State\Implementation\StateWaitingPayment
+        arguments: []
+        tags:
+            -  { name: fdemo.booking_engine.state }
+    demo.booking_engine.state.paid:
+        class: Gmorel\StateWorkflowBundle\Demo\BookingEngine\Domain\State\Implementation\StatePaid
+        arguments: []
+        tags:
+            -  { name: demo.booking_engine.state }
+    demo.booking_engine.state.cancelled:
+        class: Gmorel\StateWorkflowBundle\Demo\BookingEngine\Domain\State\Implementation\StateCancelled
+        arguments: []
+        tags:
+            -  { name: demo.booking_engine.state }
+    demo.booking_engine.state.to_delete:
+        class: Gmorel\StateWorkflowBundle\Demo\BookingEngine\Domain\State\Implementation\StateToDelete
+        arguments: []
+        tags:
+            -  { name: demo.booking_engine.state }
+
+    state_workflow_bundle.generate_workflow_specifications.command:
+        class: Gmorel\StateWorkflowBundle\Command\GenerateWorkflowSpecificationsCommand
+        tags:
+            -  { name: console.command }
