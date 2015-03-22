@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- http://phpunit.de/manual/4.1/en/appendixes.configuration.html -->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="phpunit.xsd"
+         backupGlobals="false"
+         colors="true"
+         bootstrap=".phpunit.bootstrap.php"
+>
+    <testsuites>
+        <testsuite name="Project Test Suite">
+            <directory suffix="Test.php">Test/*</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory>Command</directory>
+            <directory>Demo</directory>
+            <directory>StateEngine</directory>
+            <exclude>
+                <directory>Demo/Kernel/Resources</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+
+</phpunit>
