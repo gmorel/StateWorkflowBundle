@@ -1,13 +1,12 @@
 <?php
 
-namespace Gmorel\StateWorkflowBundle\Command;
+namespace Gmorel\StateWorkflowBundle\SpecificationGeneration\Command;
 
 use Gmorel\StateWorkflowBundle\StateEngine\Exception\UnsupportedStateTransitionException;
 use Gmorel\StateWorkflowBundle\StateEngine\StateWorkflow;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
 
 /**
  * @author Guillaume MOREL <github.com/gmorel>
@@ -48,10 +47,10 @@ class GenerateWorkflowSpecificationsCommand extends Command
             $availableStates = $workflow->getAvailableStates();
 
             if (!empty($availableStates)) {
-                $methods = [];
+                $methods = array();
                 $reflection = new \ReflectionClass(get_class(reset($availableStates)));
                 foreach ($reflection->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-                    if ($method['class'] == $reflection->getName()) {
+                    if ($method['class'] === $reflection->getName()) {
                         $methods[] = $method['name'];
                     }
 

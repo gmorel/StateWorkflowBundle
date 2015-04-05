@@ -113,7 +113,7 @@ class StateWorkflowTest extends \PHPUnit_Framework_TestCase
         $stateWorkflow = new StateWorkflow('Booking Workflow');
 
         // When
-        $entity = new Booking($stateWorkflow, 200);
+        new Booking($stateWorkflow, 200);
     }
 
     /**
