@@ -1,6 +1,6 @@
 <?php
 
-namespace SpecificationGeneration\Domain;
+namespace Gmorel\StateWorkflowBundle\SpecificationGeneration\Domain;
 
 /**
  * @author Guillaume MOREL <guillaume.morel@verylastroom.com>
@@ -26,18 +26,16 @@ class IntrospectedState
     private $isLeaf;
 
     /**
-     * @param string $key
-     * @param string $name
+     * @param string $stateKey
+     * @param string $stateName
      */
-    public function __construct($key, $name)
+    public function __construct($stateKey, $stateName)
     {
-        $this->key = $key;
-        $this->name = $name;
+        $this->key = $stateKey;
+        $this->name = $stateName;
         $this->isRoot = self::IS_NOT_ROOT;
         $this->isLeaf = self::IS_NOT_LEAF;
     }
-
-
 
     /**
      * @return string
@@ -69,5 +67,25 @@ class IntrospectedState
     public function isLeaf()
     {
         return $this->isLeaf;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setIsRoot()
+    {
+        $this->isRoot = true;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setIsLeaf()
+    {
+        $this->isLeaf = true;
+
+        return $this;
     }
 }

@@ -1,8 +1,9 @@
 <?php
 
-namespace SpecificationGeneration\Domain;
+namespace Gmorel\StateWorkflowBundle\SpecificationGeneration\Domain;
 
-use Gmorel\StateWorkflowBundle\StateEngine\Exception\EmptyWorkflow;
+use Gmorel\StateWorkflowBundle\StateEngine\Exception\EmptyWorkflowException;
+use Gmorel\StateWorkflowBundle\StateEngine\Exception\StateNotImplementedException;
 use Gmorel\StateWorkflowBundle\StateEngine\StateInterface;
 use Gmorel\StateWorkflowBundle\StateEngine\StateWorkflow;
 use Gmorel\StateWorkflowBundle\StateEngine\Exception\UnsupportedStateTransitionException;
@@ -25,8 +26,8 @@ class IntrospectedWorkflow
     {
         $availableStates = $stateWorkflow->getAvailableStates();
 
-        if (!empty($availableStates)) {
-            throw new EmptyWorkflow(
+        if (empty($availableStates)) {
+            throw new EmptyWorkflowException(
                 sprintf(
                     'Workflow "%s" has no State defined.',
                     $stateWorkflow->getName()
@@ -57,15 +58,17 @@ class IntrospectedWorkflow
 
     /**
      * @param string         $methodName
-     * @param StateInterface $availableState
+     * @param StateInterface $fromState
      *
      * @return IntrospectedTransition
+     * @throws StateNotImplementedException
      */
     private function createIntrospectedTransition($methodName, StateInterface $fromState)
     {
         $toState = $this->getToState($fromState, $methodName);
 
         return new IntrospectedTransition(
+            $methodName,
             $this->introspectedStates[$fromState->getKey()],
             $this->introspectedStates[$toState->getKey()]
         );
@@ -94,9 +97,12 @@ class IntrospectedWorkflow
         $methodNames = array();
         $reflection = new \ReflectionClass(get_class($state));
 
-        foreach ($reflection->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-            if ($method['class'] === $reflection->getName()) {
-                $methodNames[] = $method['name'];
+        $publicMethods = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
+
+        foreach ($publicMethods as $method) {
+            if ($this->isTransitionMethod($method->getName())
+                && $method->getDeclaringClass()->getName() === $reflection->getName()) {
+                $methodNames[] = $method->getName();
             }
         }
 
@@ -118,21 +124,27 @@ class IntrospectedWorkflow
      */
     private function createIntrospectedTransitions(array $availableStates)
     {
-        // Since all States are implementing the same Domain State Interface
-        // We only need to test the first State
-        $methodNames = $this->extractAvailableStateMethodNames(reset($availableStates));
+        $methodNames = array();
+        foreach ($availableStates as $availableToState) {
+            $methodNames = array_unique(array_merge(
+                $methodNames, $this->extractAvailableStateMethodNames($availableToState)
+            ));
+        }
 
-        foreach ($methodNames as $methodName) {
-            foreach ($availableStates as $availableState) {
+        foreach ($availableStates as $availableToState) {
+            foreach ($methodNames as $methodName) {
                 try {
-                    $this->introspectedTransitions[$methodName] = $this->createIntrospectedTransition(
-                        $methodName, $availableState
+                    $transitionName = $methodName . '_from_' . $availableToState->getKey();
+                    $this->introspectedTransitions[$transitionName] = $this->createIntrospectedTransition(
+                        $methodName, $availableToState
                     );
                 } catch (UnsupportedStateTransitionException $e) {
                     // Do nothing
                 }
             }
         }
+
+        $this->guessIsIntrospectedStateRootOrLeaf();
     }
 
     /**
@@ -140,11 +152,50 @@ class IntrospectedWorkflow
      * @param string         $methodName
      *
      * @return StateInterface
+     * @throws StateNotImplementedException
      */
     private function getToState(StateInterface $fromState, $methodName)
     {
-        $toState = $fromState->{$methodName};
+        if (!method_exists($fromState, $methodName)) {
+            throw new UnsupportedStateTransitionException(
+                sprintf('State %s has no method %s.', $fromState->getKey(), $methodName)
+            );
+        }
 
-        return $toState;
+        return call_user_func(array($fromState, $methodName), new StubHasState());
+    }
+
+    /**
+     * @param string $methodName
+     *
+     * @return bool
+     */
+    private function isTransitionMethod($methodName)
+    {
+        return !in_array($methodName, array('getKey', 'getName', 'setWorkflow', 'initialize'));
+    }
+
+    private function guessIsIntrospectedStateRootOrLeaf()
+    {
+        foreach ($this->introspectedStates as $introspectedState) {
+            $isRoot = true;
+            $isLeaf = true;
+            foreach ($this->introspectedTransitions as $introspectedTransition) {
+                if ($introspectedTransition->getFromIntrospectedState()->getKey() === $introspectedState->getKey()) {
+                    $isLeaf = false;
+                }
+                if ($introspectedTransition->getToIntrospectedState()->getKey() === $introspectedState->getKey()) {
+                    $isRoot = false;
+                }
+            }
+
+            if ($isRoot) {
+                $introspectedState->setIsRoot();
+            }
+
+            if ($isLeaf) {
+                $introspectedState->setIsLeaf();
+            }
+        }
     }
 }

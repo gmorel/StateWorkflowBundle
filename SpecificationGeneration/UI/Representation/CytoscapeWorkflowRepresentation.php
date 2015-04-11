@@ -1,11 +1,11 @@
 <?php
 
-namespace SpecificationGeneration\Infra;
+namespace SpecificationGeneration\Representation;
 
-use SpecificationGeneration\Domain\IntrospectedState;
-use SpecificationGeneration\Domain\IntrospectedTransition;
-use SpecificationGeneration\Domain\IntrospectedWorkflow;
-use SpecificationGeneration\Domain\WorkflowRepresentationInterface;
+use Gmorel\StateWorkflowBundle\SpecificationGeneration\Domain\IntrospectedState;
+use Gmorel\StateWorkflowBundle\SpecificationGeneration\Domain\IntrospectedTransition;
+use Gmorel\StateWorkflowBundle\SpecificationGeneration\Domain\IntrospectedWorkflow;
+use Gmorel\StateWorkflowBundle\SpecificationGeneration\Domain\WorkflowRepresentationInterface;
 
 /**
  * @author Guillaume MOREL <guillaume.morel@verylastroom.com>
