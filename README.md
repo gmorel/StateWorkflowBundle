@@ -7,38 +7,39 @@
 State Workflow Bundle
 =====================
 
-State Design Pattern implementation for a Symfony2 project
+Helping you implementing a complex yet easily maintainable workflow.
 ---------------------------------------------
 
-Keywords : State Machine, State Design Pattern, Workflow, Finite State Machine, Finite State Automaton
+Keywords : State Design Pattern, Workflow, Finite State Machine, Symfony2
 
 # WIP
 
-Helping you managing a complex yet easily maintainable workflow.
+
 
 ![Workflow](https://raw.githubusercontent.com/gmorel/StateWorkflowBundle/master/doc/booking-wokflow.png "Workflow")
 
-A StateWorkflow object is responsible for managing all States and Transitions for a given Entity.
-Every single State is a Class implementing StateInterface and is managing its own transition.
+Our `StateWorkflow` object is responsible for managing all your `States` and their `Transitions` for your given `Entity`.
+Every single State is a class implementing our `StateInterface` and is managing its own transitions.
+
 
 ### Ubiquitous Language
-- State : an Entity state at a given time (ex: `Booking payed`, `Quote cancelled`, etc..)
+- State : an Entity finite state at a given time (ex: `Booking payed`, `Quote cancelled`, etc..)
 - Transition : a transition between state A and state B (ex: `Booking waiting for payment` --`Send confirmation mail`-> `Booking payed`, etc..)
 
 
 ### Pros
-- All your workflow described via classes
-- All your workflow can be easily  **Unit Tested**
-- Workflow States can be modified **dynamically** at run time
+- All your workflow described via classes (States are services)
 - Each State is responsible from **its own transitions**
+- Each State Transition can **contain logic** (Log, Event Sourcing, Assertion, etc..)
+- All your workflow can be easily **Unit Tested**
 - Entity's current state can be **easily stored** in database (simple string)
 - Workflow **specification doc can be generated from code**
 
 
 ### Cons
 - Each time you add a transition you have to modify your own interface extending `StateInterface` implementation
-- Can be too complex for too small workflow (ie. less than different 3 states)
-- Not really follow the famous precept : prefer composition over inheritance..
+- If you only need a Finite State Machine without logic in your transitions. You might prefer https://github.com/yohang/Finite
+- Not really follows the famous precept : prefer composition over inheritance..
 
 
 
