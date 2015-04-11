@@ -101,6 +101,7 @@ class IntrospectedWorkflowTest extends \PHPUnit_Framework_TestCase
         $stateWorkflow->addAvailableState($stateToDelete);
 
         $stateWorkflow->setStateAsDefault($stateIncomplete->getKey());
+
         return $stateWorkflow;
     }
 

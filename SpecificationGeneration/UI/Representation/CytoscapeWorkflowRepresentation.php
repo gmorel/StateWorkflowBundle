@@ -1,6 +1,6 @@
 <?php
 
-namespace SpecificationGeneration\Representation;
+namespace Gmorel\StateWorkflowBundle\SpecificationGeneration\UI\Representation;
 
 use Gmorel\StateWorkflowBundle\SpecificationGeneration\Domain\IntrospectedState;
 use Gmorel\StateWorkflowBundle\SpecificationGeneration\Domain\IntrospectedTransition;
@@ -22,26 +22,40 @@ class CytoscapeWorkflowRepresentation implements WorkflowRepresentationInterface
     const STATE_SHAPE_NORMAL = 'rectangle';
     const STATE_SHAPE_LEAF = 'ellipse';
 
-    /**
-     * {@inheritdoc}
-     * @return string JSON
-     */
-    public function serialize(IntrospectedWorkflow $instrospectedWorkflow)
+    /** @var array */
+    private $jsonableStates;
+
+    /** @var array */
+    private $jsonableTransitions;
+
+    public function __construct(IntrospectedWorkflow $instrospectedWorkflow)
     {
         $colors = $this->generateStatesUniqColor(
             $instrospectedWorkflow->getIntrospectedStates()
         );
 
+        $this->jsonableStates = $this->createStatesRepresentation(
+            $instrospectedWorkflow->getIntrospectedStates(),
+            $colors
+        );
+
+        $this->jsonableTransitions = $this->createTransitionsRepresentation(
+            $instrospectedWorkflow->getIntrospectedTransitions(),
+            $colors
+        );
+    }
+
+
+    /**
+     * {@inheritdoc}
+     * @return string JSON
+     */
+    public function serialize()
+    {
         return json_encode(
             array(
-                self::KEY_STATE => $this->createStatesRepresentation(
-                    $instrospectedWorkflow->getIntrospectedStates(),
-                    $colors
-                ),
-                self::KEY_TRANSITION => $this->createTransitionsRepresentation(
-                    $instrospectedWorkflow->getIntrospectedTransitions(),
-                    $colors
-                )
+                self::KEY_STATE => $this->jsonableStates,
+                self::KEY_TRANSITION => $this->jsonableTransitions
             )
         );
     }

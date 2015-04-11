@@ -8,9 +8,7 @@ namespace Gmorel\StateWorkflowBundle\SpecificationGeneration\Domain;
 interface WorkflowRepresentationInterface
 {
     /**
-     * @param IntrospectedWorkflow $instrospectedWorkflow
-     *
      * @return string
      */
-    public function serialize(IntrospectedWorkflow $instrospectedWorkflow);
+    public function serialize();
 }
