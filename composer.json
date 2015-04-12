@@ -10,7 +10,7 @@
     "type": "project",
     "autoload":     {
         "psr-0": {
-            "Gmorel\\StateWorkflowBundle": ""
+            "Gmorel\\StateWorkflowBundle": "src/"
         }
     },
     "autoload-dev": {
