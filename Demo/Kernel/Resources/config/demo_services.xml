@@ -7,31 +7,31 @@
     <services>
 
         <!-- Booking Workflow -->
-        <service id="demo.booking_engine.state_workflow" class="Gmorel\StateWorkflowBundle\StateEngine\StateWorkflow">
+        <service id="demo.booking_engine.state_workflow" class="Gmorel\StateWorkflowBundle\StateEngine\StateWorkflow" public="false">
             <argument>Booking Workflow</argument>
             <call method="setStateAsDefault">
                 <argument type="service" id="demo.booking_engine.state.incomplete" /></call>
-            <tag name="state_workflow_bundle.workflow" />
+            <tag name="gmorel.state_workflow_bundle.workflow" />
         </service>
 
         <!-- Booking States -->
-        <service id="demo.booking_engine.state.incomplete" class="Gmorel\StateWorkflowBundle\Demo\BookingEngine\Domain\State\Implementation\StateIncomplete">
+        <service id="demo.booking_engine.state.incomplete" class="Gmorel\StateWorkflowBundle\Demo\BookingEngine\Domain\State\Implementation\StateIncomplete" public="false">
             <tag name="demo.booking_engine.state" />
         </service>
 
-        <service id="demo.booking_engine.state.waiting_payment" class="Gmorel\StateWorkflowBundle\Demo\BookingEngine\Domain\State\Implementation\StateWaitingPayment">
+        <service id="demo.booking_engine.state.waiting_payment" class="Gmorel\StateWorkflowBundle\Demo\BookingEngine\Domain\State\Implementation\StateWaitingPayment" public="false">
             <tag name="demo.booking_engine.state" />
         </service>
 
-        <service id="demo.booking_engine.state.paid" class="Gmorel\StateWorkflowBundle\Demo\BookingEngine\Domain\State\Implementation\StatePaid">
+        <service id="demo.booking_engine.state.paid" class="Gmorel\StateWorkflowBundle\Demo\BookingEngine\Domain\State\Implementation\StatePaid" public="false">
             <tag name="demo.booking_engine.state" />
         </service>
 
-        <service id="demo.booking_engine.state.cancelled" class="Gmorel\StateWorkflowBundle\Demo\BookingEngine\Domain\State\Implementation\StateCancelled">
+        <service id="demo.booking_engine.state.cancelled" class="Gmorel\StateWorkflowBundle\Demo\BookingEngine\Domain\State\Implementation\StateCancelled" public="false">
             <tag name="demo.booking_engine.state" />
         </service>
 
-        <service id="demo.booking_engine.state.to_delete" class="Gmorel\StateWorkflowBundle\Demo\BookingEngine\Domain\State\Implementation\StateToDelete">
+        <service id="demo.booking_engine.state.to_delete" class="Gmorel\StateWorkflowBundle\Demo\BookingEngine\Domain\State\Implementation\StateToDelete" public="false">
             <tag name="demo.booking_engine.state" />
         </service>
 

@@ -10,7 +10,7 @@ use Symfony\Component\Config\FileLocator;
 /**
  * @author Guillaume MOREL <github.com/gmorel>
  */
-class AppExtension extends Extension
+class StateWorkflowBundleExtension extends Extension
 {
     /**
      * {@inheritdoc}

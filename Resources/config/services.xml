@@ -6,21 +6,21 @@
 
     <services>
         <!-- Bounded Context entry point -->
-        <service id="state_workflow_bundle.specification.service" class="Gmorel\StateWorkflowBundle\SpecificationGeneration\App\SpecificationService">
-            <argument type="service" id="state_workflow_bundle.workflow.container" />
-            <argument type="service" id="state_workflow_bundle.cytoscape_specification_representation.generator" />
+        <service id="gmorel.state_workflow_bundle.specification.service" class="Gmorel\StateWorkflowBundle\SpecificationGeneration\App\SpecificationService" public="true">
+            <argument type="service" id="gmorel.state_workflow_bundle.workflow.container" />
+            <argument type="service" id="gmorel.state_workflow_bundle.cytoscape_specification_representation.generator" />
         </service>
 
         <!-- CLI -->
-        <service id="state_workflow_bundle.generate_workflow_specifications.cli" class="Gmorel\StateWorkflowBundle\SpecificationGeneration\UI\Cli\GenerateWorkflowSpecificationsCommand">
-            <argument type="service" id="state_workflow_bundle.specification.service" />
+        <service id="gmorel.state_workflow_bundle.generate_workflow_specifications.cli" class="Gmorel\StateWorkflowBundle\SpecificationGeneration\UI\Cli\GenerateWorkflowSpecificationsCommand" public="true">
+            <argument type="service" id="gmorel.state_workflow_bundle.specification.service" />
             <tag name="console.command" />
         </service>
 
-        <service id="state_workflow_bundle.cytoscape_specification_representation.generator" class="Gmorel\StateWorkflowBundle\SpecificationGeneration\Infra\CytoscapeSpecificationRepresentationGenerator">
+        <service id="gmorel.state_workflow_bundle.cytoscape_specification_representation.generator" class="Gmorel\StateWorkflowBundle\SpecificationGeneration\Infra\CytoscapeSpecificationRepresentationGenerator" public="false">
         </service>
 
-        <service id="state_workflow_bundle.workflow.container" class="Gmorel\StateWorkflowBundle\SpecificationGeneration\Domain\WorkflowContainer">
+        <service id="gmorel.state_workflow_bundle.workflow.container" class="Gmorel\StateWorkflowBundle\SpecificationGeneration\Domain\WorkflowContainer" public="false">
         </service>
 
     </services>

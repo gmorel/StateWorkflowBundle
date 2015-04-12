@@ -18,13 +18,13 @@ class RegisterStateWorkflowCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (false === $container->hasDefinition('state_workflow_bundle.workflow.container')) {
-            throw new InvalidConfigurationException('Cant find "state_workflow_bundle.workflow.container" service');
+        if (false === $container->hasDefinition('gmorel.state_workflow_bundle.workflow.container')) {
+            throw new InvalidConfigurationException('Cant find "gmorel.state_workflow_bundle.workflow.container" service');
         }
 
-        $definition = $container->getDefinition('state_workflow_bundle.workflow.container');
+        $definition = $container->getDefinition('gmorel.state_workflow_bundle.workflow.container');
 
-        $services = $container->findTaggedServiceIds('state_workflow_bundle.workflow');
+        $services = $container->findTaggedServiceIds('gmorel.state_workflow_bundle.workflow');
 
         foreach ($services as $id => $attributes) {
             $definition->addMethodCall('addWorkflow', array(new Reference($id)));
