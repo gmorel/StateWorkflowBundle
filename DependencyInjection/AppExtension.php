@@ -1,6 +1,6 @@
 <?php
 
-namespace Gmorel\StateWorkflowBundle\Kernel\DependencyInjection;
+namespace Gmorel\StateWorkflowBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -26,6 +26,6 @@ class AppExtension extends Extension
      */
     public function getAlias()
     {
-        return 'kernel';
+        return 'state_workflow';
     }
 }

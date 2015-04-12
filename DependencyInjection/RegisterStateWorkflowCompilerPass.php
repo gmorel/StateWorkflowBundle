@@ -1,6 +1,6 @@
 <?php
 
-namespace Gmorel\StateWorkflowBundle\Kernel\DependencyInjection;
+namespace Gmorel\StateWorkflowBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

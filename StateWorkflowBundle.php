@@ -2,7 +2,7 @@
 
 namespace Gmorel\StateWorkflowBundle\Kernel\AppBundle;
 
-use Gmorel\StateWorkflowBundle\Kernel\DependencyInjection\RegisterStateWorkflowCompilerPass;
+use Gmorel\StateWorkflowBundle\DependencyInjection\RegisterStateWorkflowCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
