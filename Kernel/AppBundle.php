@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 /**
  * @author Guillaume MOREL <github.com/gmorel>
  */
-class AppBundle extends Bundle
+class StateWorkflowBundle extends Bundle
 {
     /**
      * {@inheritdoc}
