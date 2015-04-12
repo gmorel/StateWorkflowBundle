@@ -1,6 +1,6 @@
 <?php
 
-namespace Gmorel\Test\StateWorkflowBundle\SpecificationGeneration\UI\Representation;
+namespace Gmorel\StateWorkflowBundle\Test\SpecificationGeneration\UI\Representation;
 
 use Gmorel\StateWorkflowBundle\Demo\BookingEngine\Domain\State\Implementation\StateCancelled;
 use Gmorel\StateWorkflowBundle\Demo\BookingEngine\Domain\State\Implementation\StateIncomplete;
