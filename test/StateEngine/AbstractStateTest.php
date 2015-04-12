@@ -18,7 +18,7 @@ class AbstractStateTest extends \PHPUnit_Framework_TestCase
     public function test_unsupported_state_transition()
     {
         // Given
-        $workflow = new StateWorkflow('Booking Workflow');
+        $workflow = new StateWorkflow('Booking Workflow', 'key');
         $workflow->addAvailableState(new StateCancelled);
         $workflow->addAvailableState(new StateToDelete());
         $workflow->setStateAsDefault(StateCancelled::KEY);

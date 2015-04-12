@@ -1,6 +1,6 @@
 <?php
 
-namespace Gmorel\StateWorkflowBundle\Demo\Kernel\DependencyInjection;
+namespace Gmorel\StateWorkflowBundle\Kernel\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -18,7 +18,7 @@ class AppExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('demo_services.xml');
+        $loader->load('services.xml');
     }
 
     /**
@@ -26,6 +26,6 @@ class AppExtension extends Extension
      */
     public function getAlias()
     {
-        return 'demo_kernel';
+        return 'kernel';
     }
 }

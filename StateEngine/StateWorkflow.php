@@ -15,6 +15,9 @@ class StateWorkflow
     /** @var string */
     private $name;
 
+    /** @var string */
+    private $key;
+
     /** @var StateInterface[] */
     private $availableStates = array();
 
@@ -22,15 +25,21 @@ class StateWorkflow
     private $defaultStateKey;
 
     /**
-     * @param $name
+     * @param string $name
+     * @param string $key
      */
-    public function __construct($name)
+    public function __construct($name, $key)
     {
         if (empty($name)) {
             throw new \LogicException('A StateWorkflow has to have a name.');
         }
 
+        if (empty($key)) {
+            throw new \LogicException('A StateWorkflow has to have a key.');
+        }
+
         $this->name = $name;
+        $this->key = $key;
     }
 
     /**
@@ -41,7 +50,13 @@ class StateWorkflow
         return $this->name;
     }
 
-
+    /**
+     * @return string
+     */
+    public function getKey()
+    {
+        return $this->key;
+    }
 
     /**
      * Add an available state

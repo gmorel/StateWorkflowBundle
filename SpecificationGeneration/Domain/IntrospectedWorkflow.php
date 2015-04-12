@@ -13,6 +13,9 @@ use Gmorel\StateWorkflowBundle\StateEngine\Exception\UnsupportedStateTransitionE
  */
 class IntrospectedWorkflow
 {
+    /** @var string */
+    private $workflowName;
+
     /** @var IntrospectedState[] */
     private $introspectedStates = array();
 
@@ -24,6 +27,7 @@ class IntrospectedWorkflow
      */
     public function __construct(StateWorkflow $stateWorkflow)
     {
+        $this->workflowName = $stateWorkflow->getName();
         $availableStates = $stateWorkflow->getAvailableStates();
 
         if (empty($availableStates)) {
@@ -38,6 +42,14 @@ class IntrospectedWorkflow
         $this->createIntrospectedStates($availableStates);
 
         $this->createIntrospectedTransitions($availableStates);
+    }
+
+    /**
+     * @return string
+     */
+    public function getWorkflowName()
+    {
+        return $this->workflowName;
     }
 
     /**
@@ -175,27 +187,48 @@ class IntrospectedWorkflow
         return !in_array($methodName, array('getKey', 'getName', 'setWorkflow', 'initialize'));
     }
 
+    /**
+     * Update introspectedState isLeaf|isRoot on the fly
+     */
     private function guessIsIntrospectedStateRootOrLeaf()
     {
         foreach ($this->introspectedStates as $introspectedState) {
-            $isRoot = true;
-            $isLeaf = true;
-            foreach ($this->introspectedTransitions as $introspectedTransition) {
-                if ($introspectedTransition->getFromIntrospectedState()->getKey() === $introspectedState->getKey()) {
-                    $isLeaf = false;
-                }
-                if ($introspectedTransition->getToIntrospectedState()->getKey() === $introspectedState->getKey()) {
-                    $isRoot = false;
-                }
-            }
+            $this->guessIsIntrospectedStateRoot($introspectedState);
+            $this->guessIsIntrospectedStateLeaf($introspectedState);
+        }
+    }
 
-            if ($isRoot) {
-                $introspectedState->setIsRoot();
+    /**
+     * @param IntrospectedState $introspectedState
+     */
+    private function guessIsIntrospectedStateRoot(IntrospectedState $introspectedState)
+    {
+        $isRoot = true;
+        foreach ($this->introspectedTransitions as $introspectedTransition) {
+            if ($introspectedTransition->getToIntrospectedState()->getKey() === $introspectedState->getKey()) {
+                $isRoot = false;
             }
+        }
 
-            if ($isLeaf) {
-                $introspectedState->setIsLeaf();
+        if ($isRoot) {
+            $introspectedState->setIsRoot();
+        }
+    }
+
+    /**
+     * @param IntrospectedState $introspectedState
+     */
+    private function guessIsIntrospectedStateLeaf(IntrospectedState $introspectedState)
+    {
+        $isLeaf = true;
+        foreach ($this->introspectedTransitions as $introspectedTransition) {
+            if ($introspectedTransition->getFromIntrospectedState()->getKey() === $introspectedState->getKey()) {
+                $isLeaf = false;
             }
+        }
+
+        if ($isLeaf) {
+            $introspectedState->setIsLeaf();
         }
     }
 }

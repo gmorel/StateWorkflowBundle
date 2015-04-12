@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <!-- Booking Workflow -->
+        <service id="demo.booking_engine.state_workflow" class="Gmorel\StateWorkflowBundle\StateEngine\StateWorkflow">
+            <argument>Booking Workflow</argument>
+            <call method="setStateAsDefault">
+                <argument type="service" id="demo.booking_engine.state.incomplete" /></call>
+            <tag name="state_workflow_bundle.workflow" />
+        </service>
+
+        <!-- Booking States -->
+        <service id="demo.booking_engine.state.incomplete" class="Gmorel\StateWorkflowBundle\Demo\BookingEngine\Domain\State\Implementation\StateIncomplete">
+            <tag name="demo.booking_engine.state" />
+        </service>
+
+        <service id="demo.booking_engine.state.waiting_payment" class="Gmorel\StateWorkflowBundle\Demo\BookingEngine\Domain\State\Implementation\StateWaitingPayment">
+            <tag name="demo.booking_engine.state" />
+        </service>
+
+        <service id="demo.booking_engine.state.paid" class="Gmorel\StateWorkflowBundle\Demo\BookingEngine\Domain\State\Implementation\StatePaid">
+            <tag name="demo.booking_engine.state" />
+        </service>
+
+        <service id="demo.booking_engine.state.cancelled" class="Gmorel\StateWorkflowBundle\Demo\BookingEngine\Domain\State\Implementation\StateCancelled">
+            <tag name="demo.booking_engine.state" />
+        </service>
+
+        <service id="demo.booking_engine.state.to_delete" class="Gmorel\StateWorkflowBundle\Demo\BookingEngine\Domain\State\Implementation\StateToDelete">
+            <tag name="demo.booking_engine.state" />
+        </service>
+
+    </services>
+</container>

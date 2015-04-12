@@ -93,7 +93,7 @@ class IntrospectedWorkflowTest extends \PHPUnit_Framework_TestCase
         $stateCancelled = new StateCancelled();
         $stateToDelete = new StateToDelete();
 
-        $stateWorkflow = new StateWorkflow('Booking Workflow');
+        $stateWorkflow = new StateWorkflow('Booking Workflow', 'key');
         $stateWorkflow->addAvailableState($stateIncomplete);
         $stateWorkflow->addAvailableState($stateWaitingPayment);
         $stateWorkflow->addAvailableState($statePaid);

@@ -20,7 +20,7 @@ class StateWorkflowTest extends \PHPUnit_Framework_TestCase
         $statePaid = new StatePaid();
         $stateCancelled = new StateCancelled();
 
-        $stateWorkflow = new StateWorkflow('Booking Workflow');
+        $stateWorkflow = new StateWorkflow('Booking Workflow', 'key');
         $stateWorkflow->addAvailableState($stateIncomplete);
         $stateWorkflow->addAvailableState($statePaid);
         $stateWorkflow->addAvailableState($stateCancelled);
@@ -36,11 +36,6 @@ class StateWorkflowTest extends \PHPUnit_Framework_TestCase
         $currentState->setBookingAsPaid($entity);
         $currentState = $entity->getState($stateWorkflow);
         $this->assertEquals($statePaid->getKey(), $currentState->getKey());
-
-        // Set paid entity as cancelled
-        $currentState->cancelBooking($entity);
-        $currentState = $entity->getState($stateWorkflow);
-        $this->assertEquals($stateCancelled->getKey(), $currentState->getKey());
     }
 
     /**
@@ -53,7 +48,7 @@ class StateWorkflowTest extends \PHPUnit_Framework_TestCase
         $statePaid = new StatePaid();
         $stateCancelled = new StateCancelled();
 
-        $stateWorkflow = new StateWorkflow('Booking Workflow');
+        $stateWorkflow = new StateWorkflow('Booking Workflow', 'key');
         $stateWorkflow->addAvailableState($stateIncomplete);
         $stateWorkflow->addAvailableState($statePaid);
         $stateWorkflow->addAvailableState($stateCancelled);
@@ -78,7 +73,7 @@ class StateWorkflowTest extends \PHPUnit_Framework_TestCase
         $statePaid = new StatePaid();
         $duplicated = new StateIncomplete();
 
-        $stateWorkflow = new StateWorkflow('Booking Workflow');
+        $stateWorkflow = new StateWorkflow('Booking Workflow', 'key');
         $stateWorkflow->addAvailableState($stateIncomplete);
         $stateWorkflow->addAvailableState($statePaid);
 
@@ -96,7 +91,7 @@ class StateWorkflowTest extends \PHPUnit_Framework_TestCase
         $statePaid = new StatePaid();
         $stateCancelled = new StateCancelled();
 
-        $stateWorkflow = new StateWorkflow('Booking Workflow');
+        $stateWorkflow = new StateWorkflow('Booking Workflow', 'key');
         $stateWorkflow->addAvailableState($stateCancelled);
         $stateWorkflow->addAvailableState($statePaid);
 
@@ -110,7 +105,7 @@ class StateWorkflowTest extends \PHPUnit_Framework_TestCase
     public function test_default_state_not_set()
     {
         // Given
-        $stateWorkflow = new StateWorkflow('Booking Workflow');
+        $stateWorkflow = new StateWorkflow('Booking Workflow', 'key');
 
         // When
         new Booking($stateWorkflow, 200);
@@ -125,7 +120,7 @@ class StateWorkflowTest extends \PHPUnit_Framework_TestCase
         $stateIncomplete = new StateIncomplete();
         $statePaid = new StatePaid();
 
-        $stateWorkflow = new StateWorkflow('Booking Workflow');
+        $stateWorkflow = new StateWorkflow('Booking Workflow', 'key');
         $stateWorkflow->addAvailableState($stateIncomplete);
         $stateWorkflow->addAvailableState($statePaid);
 

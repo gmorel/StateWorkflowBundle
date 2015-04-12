@@ -5,7 +5,7 @@ namespace Gmorel\StateWorkflowBundle\SpecificationGeneration\UI\Representation;
 use Gmorel\StateWorkflowBundle\SpecificationGeneration\Domain\IntrospectedState;
 use Gmorel\StateWorkflowBundle\SpecificationGeneration\Domain\IntrospectedTransition;
 use Gmorel\StateWorkflowBundle\SpecificationGeneration\Domain\IntrospectedWorkflow;
-use Gmorel\StateWorkflowBundle\SpecificationGeneration\Domain\WorkflowRepresentationInterface;
+use Gmorel\StateWorkflowBundle\SpecificationGeneration\Domain\Representation\WorkflowRepresentationInterface;
 
 /**
  * @author Guillaume MOREL <guillaume.morel@verylastroom.com>
@@ -22,6 +22,9 @@ class CytoscapeWorkflowRepresentation implements WorkflowRepresentationInterface
     const STATE_SHAPE_NORMAL = 'rectangle';
     const STATE_SHAPE_LEAF = 'ellipse';
 
+    /** @var string */
+    private $workflowName;
+
     /** @var array */
     private $jsonableStates;
 
@@ -30,6 +33,7 @@ class CytoscapeWorkflowRepresentation implements WorkflowRepresentationInterface
 
     public function __construct(IntrospectedWorkflow $instrospectedWorkflow)
     {
+        $this->workflowName = $instrospectedWorkflow->getWorkflowName();
         $colors = $this->generateStatesUniqColor(
             $instrospectedWorkflow->getIntrospectedStates()
         );
@@ -45,6 +49,13 @@ class CytoscapeWorkflowRepresentation implements WorkflowRepresentationInterface
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getWorkflowName()
+    {
+        return $this->workflowName;
+    }
 
     /**
      * {@inheritdoc}
