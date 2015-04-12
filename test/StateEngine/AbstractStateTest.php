@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\StateWorkflowBundle\StateEngine;
+namespace Gmorel\Test\StateWorkflowBundle\StateEngine;
 
 use Gmorel\StateWorkflowBundle\Demo\BookingEngine\Domain\Entity\Booking;
 use Gmorel\StateWorkflowBundle\Demo\BookingEngine\Domain\State\Implementation\StateCancelled;

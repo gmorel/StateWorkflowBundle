@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\StateWorkflowBundle\SpecificationGeneration\UI\Cli;
+namespace Gmorel\Test\StateWorkflowBundle\SpecificationGeneration\UI\Cli;
 
 use Gmorel\StateWorkflowBundle\SpecificationGeneration\UI\Cli\GenerateWorkflowSpecificationsCommand;
 use Symfony\Component\Console\Application;

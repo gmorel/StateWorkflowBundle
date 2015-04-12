@@ -10,12 +10,14 @@
     "type": "project",
     "autoload":     {
         "psr-0": {
-            "Gmorel\\StateWorkflowBundle": "src/"
+            "Gmorel\\StateWorkflowBundle\\StateEngine": "Gmorel/StateWorkflowBundle/StateEngine/",
+            "Gmorel\\StateWorkflowBundle\\Kernel": "Gmorel/StateWorkflowBundle/Kernel/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Test\\": "test/"
+            "Gmorel\\StateWorkflowBundle\\SpecificationGeneration": "Gmorel/StateWorkflowBundle/SpecificationGeneration/",
+            "Gmorel\\Test\\": "test/"
         }
     },
     "require": {
