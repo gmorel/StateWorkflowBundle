@@ -19,7 +19,7 @@ class WorkflowContainer
      */
     public function addWorkflow(StateWorkflow $stateWorkflow)
     {
-        $this->workflows[$stateWorkflow->getKey()] = $stateWorkflow;
+        $this->workflows[$stateWorkflow->getServiceId()] = $stateWorkflow;
     }
 
     /**
@@ -36,5 +36,13 @@ class WorkflowContainer
         $workflow = $this->workflows[$id];
 
         return $workflow;
+    }
+
+    /**
+     * @return \Gmorel\StateWorkflowBundle\StateEngine\StateWorkflow[]
+     */
+    public function all()
+    {
+        return $this->workflows;
     }
 }

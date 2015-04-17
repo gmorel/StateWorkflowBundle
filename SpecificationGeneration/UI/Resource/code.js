@@ -56,30 +56,6 @@ $(function(){ // on dom ready
 
       ready: function(){
         window.cy = this;
-
-    //   this.$('#i').renderedPosition({
-    //  x: 0,
-    //  y: 0
-    //});
-
-//          this.$('#i').animate({renderedPosition:
-//          {x: 200, y: 200}
-//          }, {
-//  duration: 500
-//});
-    //
-    //      var layout = this.elements().makeLayout({
-    //  name: 'grid'
-    //});
-    //
-    //layout.run();
-
-    //      this.$('#c').position({
-    //  x: 600,
-    //  y: 200
-    //});
-
-        // giddy up
       }
     });
 

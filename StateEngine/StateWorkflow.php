@@ -16,7 +16,7 @@ class StateWorkflow
     private $name;
 
     /** @var string */
-    private $key;
+    private $serviceId;
 
     /** @var StateInterface[] */
     private $availableStates = array();
@@ -26,20 +26,20 @@ class StateWorkflow
 
     /**
      * @param string $name
-     * @param string $key
+     * @param string $serviceId
      */
-    public function __construct($name, $key)
+    public function __construct($name, $serviceId)
     {
         if (empty($name)) {
             throw new \LogicException('A StateWorkflow has to have a name.');
         }
 
-        if (empty($key)) {
-            throw new \LogicException('A StateWorkflow has to have a key.');
+        if (empty($serviceId)) {
+            throw new \LogicException('A StateWorkflow has to have a service id.');
         }
 
         $this->name = $name;
-        $this->key = $key;
+        $this->serviceId = $serviceId;
     }
 
     /**
@@ -53,9 +53,9 @@ class StateWorkflow
     /**
      * @return string
      */
-    public function getKey()
+    public function getServiceId()
     {
-        return $this->key;
+        return $this->serviceId;
     }
 
     /**

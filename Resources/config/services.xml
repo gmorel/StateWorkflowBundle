@@ -9,6 +9,7 @@
         <service id="gmorel.state_workflow_bundle.specification.service" class="Gmorel\StateWorkflowBundle\SpecificationGeneration\App\SpecificationService" public="true">
             <argument type="service" id="gmorel.state_workflow_bundle.workflow.container" />
             <argument type="service" id="gmorel.state_workflow_bundle.cytoscape_specification_representation.generator" />
+            <argument type="service" id="gmorel.state_workflow_bundle.specification.writer" />
         </service>
 
         <!-- CLI -->
@@ -17,8 +18,8 @@
             <tag name="console.command" />
         </service>
 
-        <service id="gmorel.state_workflow_bundle.cytoscape_specification_representation.generator" class="Gmorel\StateWorkflowBundle\SpecificationGeneration\Infra\CytoscapeSpecificationRepresentationGenerator" public="false">
-        </service>
+        <service id="gmorel.state_workflow_bundle.cytoscape_specification_representation.generator" class="Gmorel\StateWorkflowBundle\SpecificationGeneration\Infra\CytoscapeSpecificationRepresentationGenerator" public="false"/>
+        <service id="gmorel.state_workflow_bundle.specification.writer" class="Gmorel\StateWorkflowBundle\SpecificationGeneration\Infra\FileSystemSpecificationWriter" public="false"/>
 
         <service id="gmorel.state_workflow_bundle.workflow.container" class="Gmorel\StateWorkflowBundle\SpecificationGeneration\Domain\WorkflowContainer" public="false">
         </service>

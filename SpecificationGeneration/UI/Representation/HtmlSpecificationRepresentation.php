@@ -11,7 +11,7 @@ use Gmorel\StateWorkflowBundle\SpecificationGeneration\Domain\Representation\Spe
  */
 class HtmlSpecificationRepresentation implements SpecificationRepresentationInterface
 {
-    const TEMPLATE_VARIABLE_WORKFLOW_NAME = '>__WORKFLOW_NAME__';
+    const TEMPLATE_VARIABLE_WORKFLOW_NAME = '__WORKFLOW_NAME__';
     const TEMPLATE_VARIABLE_JSONED_WORKFLOW = '__JSON__';
 
     /** @var string HTML */

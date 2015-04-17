@@ -6,6 +6,7 @@ use Gmorel\StateWorkflowBundle\SpecificationGeneration\App\Command\RenderWorkflo
 use Gmorel\StateWorkflowBundle\SpecificationGeneration\App\SpecificationService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -18,8 +19,8 @@ class GenerateWorkflowSpecificationsCommand extends Command
 
     public function __construct(SpecificationService $specificationService)
     {
-        parent::__construct();
         $this->specificationService = $specificationService;
+        parent::__construct();
     }
 
     /**
@@ -30,6 +31,22 @@ class GenerateWorkflowSpecificationsCommand extends Command
         $this
             ->setName('gmorel:state-engine:generate-workflow-specifications')
             ->setDescription('Generate workflow specifications')
+            ->addOption(
+                '--workflow-service-id',
+                null,
+                InputOption::VALUE_REQUIRED,
+                sprintf(
+                    'Workflow service id to specify (available : "%s").',
+                    implode('", "', $this->specificationService->getAvailableWorkflowIds())
+                )
+            )
+            ->addOption(
+                '--target-path',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Generated Workflow specification path directory.',
+                $this->getDefaultSpecificationDirectory()
+            )
         ;
     }
 
@@ -38,13 +55,13 @@ class GenerateWorkflowSpecificationsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // @todo add parameters
+        $specificationFileName = $input->getOption('target-path') . DIRECTORY_SEPARATOR . $input->getOption('workflow-service-id') . '.html';
         $command = new RenderWorkflowSpecificationFromWorkflowServiceCommand(
-            'demo.booking_engine.state_workflow',
-            '/home/gmorel/dev/www/StateWorkflowBundle/specification/workflow'
+            $input->getOption('workflow-service-id'),
+            $specificationFileName
         );
 
-        $output->write(
+        $output->writeln(
             sprintf(
                 'Generating "%s" workflow specification.',
                 $command->getWorkFlowServiceId()
@@ -53,11 +70,23 @@ class GenerateWorkflowSpecificationsCommand extends Command
 
         $this->specificationService->renderSpecification($command);
 
-        $output->write(
+        $output->writeln(
             sprintf(
-                'Workflow specification generated in "%".',
-                $command->getOutputFileName()
+                'Workflow specification generated in "%s".',
+                $specificationFileName
             )
         );
+    }
+
+    /**
+     * @return string
+     */
+    private function getDefaultSpecificationDirectory()
+    {
+        return str_replace(
+            '/',
+            DIRECTORY_SEPARATOR,
+            realpath(__DIR__ . '/../../../../../../../..')
+        ) . DIRECTORY_SEPARATOR . 'specification/workflow';
     }
 }

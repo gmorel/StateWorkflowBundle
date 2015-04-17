@@ -1,15 +1,15 @@
 <?php
 
-namespace Gmorel\StateWorkflowBundle\Demo\Kernel\AppBundle;
+namespace Gmorel\StateWorkflowBundle\Demo\KernelBundle;
 
-use Gmorel\StateWorkflowBundle\Demo\Kernel\DependencyInjection\RegisterStateCompilerPass;
+use Gmorel\StateWorkflowBundle\Demo\KernelBundle\DependencyInjection\RegisterBookingStateWorkflowCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * @author Guillaume MOREL <github.com/gmorel>
  */
-class AppBundle extends Bundle
+class KernelBundle extends Bundle
 {
     /**
      * {@inheritdoc}
@@ -18,6 +18,6 @@ class AppBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new RegisterStateCompilerPass());
+        $container->addCompilerPass(new RegisterBookingStateWorkflowCompilerPass());
     }
 }

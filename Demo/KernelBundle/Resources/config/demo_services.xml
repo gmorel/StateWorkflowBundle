@@ -9,8 +9,7 @@
         <!-- Booking Workflow -->
         <service id="demo.booking_engine.state_workflow" class="Gmorel\StateWorkflowBundle\StateEngine\StateWorkflow" public="false">
             <argument>Booking Workflow</argument>
-            <call method="setStateAsDefault">
-                <argument type="service" id="demo.booking_engine.state.incomplete" /></call>
+            <argument>demo.booking_engine.state_workflow</argument>
             <tag name="gmorel.state_workflow_bundle.workflow" />
         </service>
 

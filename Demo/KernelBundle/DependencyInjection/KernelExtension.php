@@ -1,6 +1,6 @@
 <?php
 
-namespace Gmorel\StateWorkflowBundle\DependencyInjection;
+namespace Gmorel\StateWorkflowBundle\Demo\KernelBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -10,7 +10,7 @@ use Symfony\Component\Config\FileLocator;
 /**
  * @author Guillaume MOREL <github.com/gmorel>
  */
-class StateWorkflowBundleExtension extends Extension
+class KernelExtension extends Extension
 {
     /**
      * {@inheritdoc}
@@ -18,14 +18,6 @@ class StateWorkflowBundleExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('services.xml');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAlias()
-    {
-        return 'state_workflow';
+        $loader->load('demo_services.xml');
     }
 }

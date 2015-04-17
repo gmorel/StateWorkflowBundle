@@ -25,7 +25,7 @@ class SpecificationServiceTest extends \PHPUnit_Framework_TestCase
         $outputFileName = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid() . '.html';
 
         $command = new RenderWorkflowSpecificationFromWorkflowServiceCommand(
-            $stateWorkflow->getKey(),
+            $stateWorkflow->getServiceId(),
             $outputFileName
         );
         $workflowContainer = new WorkflowContainer();
