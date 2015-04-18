@@ -63,12 +63,24 @@ class CytoscapeWorkflowRepresentation implements WorkflowRepresentationInterface
      */
     public function serialize()
     {
-        return json_encode(
-            array(
-                self::KEY_STATE => $this->jsonableStates,
-                self::KEY_TRANSITION => $this->jsonableTransitions
-            )
-        );
+        return sprintf('{
+    nodes: [
+        %s
+    ],
+    edges: [
+        %s
+    ]
+  }',
+            implode(",\n        ", $this->jsonableStates),
+            implode(",\n        ", $this->jsonableTransitions)
+            );
+
+//        return json_encode(
+//            array(
+//                self::KEY_STATE => $this->jsonableStates,
+//                self::KEY_TRANSITION => $this->jsonableTransitions
+//            )
+//        );
     }
 
     /**
@@ -81,15 +93,23 @@ class CytoscapeWorkflowRepresentation implements WorkflowRepresentationInterface
     {
         $jsonableStates = array();
         foreach ($introspectedStates as $introspectedState) {
-            $jsonableStates[] = array(
-                'data' => array(
-                    'id' => $introspectedState->getKey(),
-                    'name' => $introspectedState->getName(),
-                    'weight' => self::DEFAULT_STATE_WEIGHT,
-                    'faveColor' => $colors[$introspectedState->getKey()],
-                    'faveShape' => $this->getStateShape($introspectedState)
-                )
-            );
+            $jsonableStates[] = sprintf(
+            "{ data: { id: '%s', name: '%s', weight: %s, faveColor: '%s', faveShape: '%s' } }",
+            $introspectedState->getKey(),
+            $introspectedState->getName(),
+            self::DEFAULT_STATE_WEIGHT,
+            $colors[$introspectedState->getKey()],
+            $this->getStateShape($introspectedState)
+        );
+//            $jsonableStates[] = array(
+//                'data' => array(
+//                    'id' => $introspectedState->getKey(),
+//                    'name' => $introspectedState->getName(),
+//                    'weight' => self::DEFAULT_STATE_WEIGHT,
+//                    'faveColor' => $colors[$introspectedState->getKey()],
+//                    'faveShape' => $this->getStateShape($introspectedState)
+//                )
+//            );
         }
 
         return $jsonableStates;
@@ -105,14 +125,21 @@ class CytoscapeWorkflowRepresentation implements WorkflowRepresentationInterface
     {
         $jsonableTransitions = array();
         foreach ($introspectedTransitions as $introspectedTransition) {
-            $jsonableTransitions[] = array(
-                'data' => array(
-                    'source' => $introspectedTransition->getFromIntrospectedState()->getKey(),
-                    'target' => $introspectedTransition->getToIntrospectedState()->getKey(),
-                    'faveColor' => $colors[$introspectedTransition->getFromIntrospectedState()->getKey()],
-                    'strength' => self::DEFAULT_TRANSITION_STRENGTH
-                )
+            $jsonableTransitions[] = sprintf(
+                "{ data: { source: '%s', target: '%s', faveColor: '%s', strength: %s } }",
+                $introspectedTransition->getFromIntrospectedState()->getKey(),
+                $introspectedTransition->getToIntrospectedState()->getKey(),
+                $colors[$introspectedTransition->getFromIntrospectedState()->getKey()],
+                self::DEFAULT_TRANSITION_STRENGTH
             );
+//            $jsonableTransitions[] = array(
+//                'data' => array(
+//                    'source' => $introspectedTransition->getFromIntrospectedState()->getKey(),
+//                    'target' => $introspectedTransition->getToIntrospectedState()->getKey(),
+//                    'faveColor' => $colors[$introspectedTransition->getFromIntrospectedState()->getKey()],
+//                    'strength' => self::DEFAULT_TRANSITION_STRENGTH
+//                )
+//            );
         }
 
         return $jsonableTransitions;
