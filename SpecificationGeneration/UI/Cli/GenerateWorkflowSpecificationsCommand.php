@@ -32,15 +32,6 @@ class GenerateWorkflowSpecificationsCommand extends Command
             ->setName('gmorel:state-engine:generate-workflow-specifications')
             ->setDescription('Generate workflow specifications')
             ->addOption(
-                '--workflow-service-id',
-                null,
-                InputOption::VALUE_REQUIRED,
-                sprintf(
-                    'Workflow service id to specify (available : "%s").',
-                    implode('", "', $this->specificationService->getAvailableWorkflowIds())
-                )
-            )
-            ->addOption(
                 '--target-path',
                 null,
                 InputOption::VALUE_REQUIRED,
@@ -55,27 +46,17 @@ class GenerateWorkflowSpecificationsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $specificationFileName = $input->getOption('target-path') . DIRECTORY_SEPARATOR . $input->getOption('workflow-service-id') . '.html';
-        $command = new RenderWorkflowSpecificationFromWorkflowServiceCommand(
-            $input->getOption('workflow-service-id'),
-            $specificationFileName
-        );
-
-        $output->writeln(
-            sprintf(
-                'Generating "%s" workflow specification.',
-                $command->getWorkFlowServiceId()
-            )
-        );
-
-        $this->specificationService->renderSpecification($command);
-
-        $output->writeln(
-            sprintf(
-                'Workflow specification generated in "%s".',
+        foreach ($this->specificationService->getAvailableWorkflowIds() as $workflowId) {
+            $specificationFileName = $input->getOption('target-path') . DIRECTORY_SEPARATOR . $workflowId . '.html';
+            $command = new RenderWorkflowSpecificationFromWorkflowServiceCommand(
+                $workflowId,
                 $specificationFileName
-            )
-        );
+            );
+
+            $output->writeln(sprintf('Generating "%s" workflow specification.', $command->getWorkFlowServiceId()));
+            $this->specificationService->renderSpecification($command);
+            $output->writeln(sprintf('Workflow specification generated in "%s".', $specificationFileName));
+        }
     }
 
     /**

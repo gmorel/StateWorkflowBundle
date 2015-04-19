@@ -34,7 +34,7 @@ class CytoscapeWorkflowRepresentation implements WorkflowRepresentationInterface
     public function __construct(IntrospectedWorkflow $instrospectedWorkflow)
     {
         $this->workflowName = $instrospectedWorkflow->getWorkflowName();
-        $colors = $this->generateStatesUniqColor(
+        $colors = $this->assignUniqueColorToStates(
             $instrospectedWorkflow->getIntrospectedStates()
         );
 
@@ -63,24 +63,12 @@ class CytoscapeWorkflowRepresentation implements WorkflowRepresentationInterface
      */
     public function serialize()
     {
-        return sprintf('{
-    nodes: [
-        %s
-    ],
-    edges: [
-        %s
-    ]
-  }',
-            implode(",\n        ", $this->jsonableStates),
-            implode(",\n        ", $this->jsonableTransitions)
-            );
-
-//        return json_encode(
-//            array(
-//                self::KEY_STATE => $this->jsonableStates,
-//                self::KEY_TRANSITION => $this->jsonableTransitions
-//            )
-//        );
+        return json_encode(
+            array(
+                self::KEY_STATE => $this->jsonableStates,
+                self::KEY_TRANSITION => $this->jsonableTransitions
+            )
+        );
     }
 
     /**
@@ -93,23 +81,15 @@ class CytoscapeWorkflowRepresentation implements WorkflowRepresentationInterface
     {
         $jsonableStates = array();
         foreach ($introspectedStates as $introspectedState) {
-            $jsonableStates[] = sprintf(
-            "{ data: { id: '%s', name: '%s', weight: %s, faveColor: '%s', faveShape: '%s' } }",
-            $introspectedState->getKey(),
-            $introspectedState->getName(),
-            self::DEFAULT_STATE_WEIGHT,
-            $colors[$introspectedState->getKey()],
-            $this->getStateShape($introspectedState)
-        );
-//            $jsonableStates[] = array(
-//                'data' => array(
-//                    'id' => $introspectedState->getKey(),
-//                    'name' => $introspectedState->getName(),
-//                    'weight' => self::DEFAULT_STATE_WEIGHT,
-//                    'faveColor' => $colors[$introspectedState->getKey()],
-//                    'faveShape' => $this->getStateShape($introspectedState)
-//                )
-//            );
+            $jsonableStates[] = array(
+                'data' => array(
+                    'id' => $introspectedState->getKey(),
+                    'name' => $introspectedState->getName(),
+                    'weight' => self::DEFAULT_STATE_WEIGHT,
+                    'faveColor' => $colors[$introspectedState->getKey()],
+                    'faveShape' => $this->getStateShape($introspectedState)
+                )
+            );
         }
 
         return $jsonableStates;
@@ -125,21 +105,14 @@ class CytoscapeWorkflowRepresentation implements WorkflowRepresentationInterface
     {
         $jsonableTransitions = array();
         foreach ($introspectedTransitions as $introspectedTransition) {
-            $jsonableTransitions[] = sprintf(
-                "{ data: { source: '%s', target: '%s', faveColor: '%s', strength: %s } }",
-                $introspectedTransition->getFromIntrospectedState()->getKey(),
-                $introspectedTransition->getToIntrospectedState()->getKey(),
-                $colors[$introspectedTransition->getFromIntrospectedState()->getKey()],
-                self::DEFAULT_TRANSITION_STRENGTH
+            $jsonableTransitions[] = array(
+                'data' => array(
+                    'source' => $introspectedTransition->getFromIntrospectedState()->getKey(),
+                    'target' => $introspectedTransition->getToIntrospectedState()->getKey(),
+                    'faveColor' => $colors[$introspectedTransition->getFromIntrospectedState()->getKey()],
+                    'strength' => self::DEFAULT_TRANSITION_STRENGTH
+                )
             );
-//            $jsonableTransitions[] = array(
-//                'data' => array(
-//                    'source' => $introspectedTransition->getFromIntrospectedState()->getKey(),
-//                    'target' => $introspectedTransition->getToIntrospectedState()->getKey(),
-//                    'faveColor' => $colors[$introspectedTransition->getFromIntrospectedState()->getKey()],
-//                    'strength' => self::DEFAULT_TRANSITION_STRENGTH
-//                )
-//            );
         }
 
         return $jsonableTransitions;
@@ -150,11 +123,11 @@ class CytoscapeWorkflowRepresentation implements WorkflowRepresentationInterface
      *
      * @return string[]
      */
-    private function generateStatesUniqColor(array $introspectedStates)
+    private function assignUniqueColorToStates(array $introspectedStates)
     {
         $colors = array();
         foreach ($introspectedStates as $introspectedState) {
-            $colors[$introspectedState->getKey()] = '#6FB1FC';
+            $colors[$introspectedState->getKey()] = $this->createUniqueColor($introspectedState->getKey());
         }
 
         return $colors;
@@ -176,5 +149,57 @@ class CytoscapeWorkflowRepresentation implements WorkflowRepresentationInterface
         }
 
         return self::STATE_SHAPE_NORMAL;
+    }
+
+    /**
+     * @param int $number
+     *
+     * @return string
+     * @credits https://github.com/baykall/Php-Unique-HTML-Color-Generator-From-String/blob/master/color.php
+     */
+    private function getColorChar($number)
+    {
+        $modulo = $number % 22;
+
+        if($modulo < 10) {
+            $str = (string) $modulo;
+        } elseif($number == 10 || $modulo == 21) {
+            $str = 'A';
+        } elseif($number == 11 || $number == 20) {
+            $str = 'B';
+        } elseif($number == 12 || $number == 19) {
+            $str = 'C';
+        } elseif($number == 13 || $number == 18) {
+            $str = 'D';
+        } elseif($number == 14 || $number == 17) {
+            $str = 'E';
+        } else {
+            $str = 'F';
+        }
+
+        return strrev($str);
+    }
+
+    /**
+     * @param string $initializationVector
+     *
+     * @return string #FF0000
+     * @credits https://github.com/baykall/Php-Unique-HTML-Color-Generator-From-String/blob/master/color.php
+     */
+    private function createUniqueColor($initializationVector)
+    {
+        if(empty($initializationVector)) {
+            return '#FF0000';
+        }
+
+        $length = strlen($initializationVector);
+        $color = '';
+        for ($i = 1; $i <= 6; $i++) {
+
+            $charNumber = ($i - 1) % $length;
+            $color = $color . $this->getColorChar(ord($initializationVector{$charNumber}));
+        }
+
+        return '#' . $color;
     }
 }

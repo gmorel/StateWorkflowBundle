@@ -5,12 +5,8 @@ $(function(){ // on dom ready
 
     $('#cy').cytoscape({
       layout: {
-        name: 'breadthfirst',
-        padding: 50,
-          animate: true,
-          animationDuration: 500,
-          maximalAdjustments: 2,
-          directed: false
+        name: 'cose',
+        padding: 50
       },
 
       style: cytoscape.stylesheet()
