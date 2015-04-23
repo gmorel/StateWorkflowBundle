@@ -31,7 +31,7 @@ script:
 notifications:
     email:
         recipients:
-            - ci@verylastroom.comguillaume.morel@gmx.com
+            - guillaume.morel@gmx.com
         on_success: change
         on_failure: change
 

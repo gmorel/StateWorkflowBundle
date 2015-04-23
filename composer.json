@@ -7,7 +7,7 @@
             "email": "guillaume.morel@gmx.com"
         }
     ],
-    "type": "project",
+    "type": "library",
     "autoload":     {
         "psr-0": {
             "Gmorel\\StateWorkflowBundle": ""
