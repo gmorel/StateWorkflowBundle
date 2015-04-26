@@ -64,6 +64,10 @@ $currentState = $booking->getState($bookingStateWorkflow);
 
 ```
 
+### Implementation example
+
+Booking Demo https://github.com/gmorel/StateWorkflowDemo
+
 ### Details
 
 It will allow you to manage `States` and especially their available `Transitions` for an `Entity` (for example a Booking class) implementing our ```HasStateInterface```.
@@ -87,8 +91,17 @@ In case you wish to add a new `Transition` you will need to add a new method in 
 You can also use our helper ```AbstractState``` to implement default behavior ie. a method throwing our `UnsupportedStateTransitionException`.
 
 
-### Credits
+Credits
+=======
+
+- [State Design Pattern](https://sourcemaking.com/design_patterns/state)
+
+Licence
+=======
+
+MIT License (MIT)
+
+Contributing
+============
 
 Feel free to enhance it and to share your ideas/enhancements.
-
-Licence: MIT
